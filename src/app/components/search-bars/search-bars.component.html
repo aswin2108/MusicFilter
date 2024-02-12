@@ -1,0 +1,14 @@
+<div>
+    <form [formGroup]="searchForm" class="d-flex gap-3">
+        <div class="form-floating mb-3">
+            <input type="text" id="floatingInput" class="form-control" placeholder="Enter song name"
+                formControlName="songName">
+            <label for="floatingInput">Song Name Filter</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" id="floatingInput" class="form-control" placeholder="Enter artist name"
+                formControlName="artistName">
+            <label for="floatingInput">Artist Name Filter</label>
+        </div>
+    </form>
+</div>

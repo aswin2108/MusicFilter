@@ -1,0 +1,62 @@
+<div>
+  <div class="d-flex justify-content-center justify-content-around pb-3">
+    <button class="btn btn-primary d-flex" (click)="openAddDialog('500ms','500ms')"><span
+        class="material-symbols-outlined">
+        add_box
+      </span>&nbsp;Add Songs</button>
+    <button class="btn btn-danger d-flex align-self-center" [disabled]="deleteIdList.length>5 || deleteIdList.length===0"
+      (click)="openDeleteDialog('500ms','500ms')"><span class="material-symbols-outlined align-self-center">
+        delete
+      </span>&nbsp;Delete Songs</button>
+  </div>
+  <div class="table-container">
+    <table class="table table-striped table-dark mb-0">
+      <thead>
+        <tr>
+          <th *ngFor="let column of tableColumns">
+            <div class="d-flex justify-content-between columnHeader align-items-center">
+              {{ column.title }}
+              <p *ngIf="column.propertyName==='durationInSeconds' && durationInSecStatus===true" class="m-0">(sec)</p>
+              <p *ngIf="column.propertyName==='durationInSeconds' && durationInSecStatus===false" class="m-0">(MM:SS)</p>
+              <div *ngIf="column.propertyName==='durationInSeconds'" class="toggle-btn-container">
+                <button class="btn btn-outline-warning toggle-dur-btn p-0"
+                  (click)="durationInSecStatus=!durationInSecStatus"><span class="material-symbols-outlined iconSize">
+                    swap_horiz
+                  </span></button>
+              </div>
+
+              <div class="sort-btn-container" *ngIf="column.propertyName!==''">
+                <button [ngClass]="{'isActive':column.btnStatus%3===2}"
+                  class="btn btn-outline-secondary d-none sorting-btn p-0" (click)="sortInOrder(column,2)"><span
+                    class="material-symbols-outlined iconSize">swap_vert</span></button>
+                <button [ngClass]="{'isActive':column.btnStatus%3===0}"
+                  class="btn btn-outline-success d-none sorting-btn p-0" (click)="sortInOrder(column,0)"><span
+                    class="material-symbols-outlined iconSize">arrow_downward</span></button>
+                <button [ngClass]="{'isActive':column.btnStatus%3===1}"
+                  class="btn btn-outline-danger d-none sorting-btn p-0" (click)="sortInOrder(column,1)"><span
+                    class="material-symbols-outlined iconSize">arrow_upward</span></button>
+              </div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let song of displaySongs">
+          <!-- <td>{{ song.id }}</td> -->
+          <td>{{ song.songName }}</td>
+          <td>{{ song.artistName }}</td>
+          <td>{{ song.numberOfStreams }}</td>
+          <td>{{ song.releaseYear }}</td>
+          <td *ngIf="durationInSecStatus===true">{{ song.durationInSeconds }}</td>
+          <td *ngIf="durationInSecStatus===false">{{ song.durationInMMSS }}</td>
+          <td><input type="checkbox" (change)="toggleSelection(song, $event)" [checked]="song.isSelected"> </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)"
+      [length]="filteredSongs?.length ?? 0" [pageSize]="pageSize" [showFirstLastButtons]="true"
+      [pageSizeOptions]="[5,10,20,50,100]" [pageIndex]="pageIndex" aria-label="Select page">
+    </mat-paginator>
+  </div>
+</div>
